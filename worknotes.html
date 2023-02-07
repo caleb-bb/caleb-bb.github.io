@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <!-- 2023-02-06 Mon 22:12 -->
+  <meta http-equiv="Content-Type" content=
+  "text/html; charset=us-ascii" />
+  <meta name="viewport" content=
+  "width=device-width, initial-scale=1" />
+
+  <title>&lrm;</title>
+  <meta name="author" content="John Doe" />
+  <meta name="generator" content="Org Mode" />
+  <style type="text/css">
+/*<![CDATA[*/
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+  /*]]>*/
+  </style>
+</head>
+
+<body>
+  <div id="content" class="content">
+    <div id="table-of-contents" role="doc-toc">
+      <h2>Table of Contents</h2>
+
+      <div id="text-table-of-contents" role="doc-toc">
+        <ul>
+          <li>
+            <a href="#org0e1a68a">1. January</a>
+
+            <ul>
+              <li>
+                <a href="#org810db8f">1.1. Monday 1/30</a>
+
+                <ul>
+                  <li><a href="#org66c1a54">1.1.1. Add missing
+                  billing categories #187</a></li>
+
+                  <li><a href="#org755a1ae">1.1.2. Feat/na i116
+                  email identity management #189</a></li>
+                </ul>
+              </li>
+
+              <li>
+                <a href="#org7cad44d">1.2. Tuesday 1/31</a>
+
+                <ul>
+                  <li><a href="#org799ac08">1.2.1. Feat/na i116
+                  email identity management #189</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <a href="#org79e01ff">2. February</a>
+
+            <ul>
+              <li>
+                <a href="#org18631ac">2.1. Wednesday 2/1</a>
+
+                <ul>
+                  <li><a href="#orgdd9a544">2.1.1. Feat/na i116
+                  email identity management #189</a></li>
+                </ul>
+              </li>
+
+              <li><a href="#orga34a033">2.2. Thursday 2/2</a></li>
+
+              <li>
+                <a href="#org7d9e1a3">2.3. Friday 2/3</a>
+
+                <ul>
+                  <li><a href="#orgbd924b1">2.3.1. (feat) [NA-I143]
+                  Seperate &ldquo;notes&rdquo; as a separate button
+                  and patch objects</a></li>
+                </ul>
+              </li>
+
+              <li><a href="#org2a5ada7">2.4. Monday 2/6</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="outline-container-org0e1a68a" class="outline-2">
+      <h2 id="org0e1a68a"><span class="section-number-2">1.</span>
+      January</h2>
+
+      <div class="outline-text-2" id="text-1"></div>
+
+      <div id="outline-container-org810db8f" class="outline-3">
+        <h3 id="org810db8f"><span class=
+        "section-number-3">1.1.</span> Monday 1/30</h3>
+
+        <div class="outline-text-3" id="text-1-1"></div>
+
+        <div id="outline-container-org66c1a54" class="outline-4">
+          <h4 id="org66c1a54"><span class=
+          "section-number-4">1.1.1.</span> Add missing billing
+          categories #187</h4>
+
+          <div class="outline-text-4" id="text-1-1-1">
+            <p>(note: merge this one before #189)</p>
+
+            <ol class="org-ol">
+              <li>Put the links in `root.html.heex` under the right
+              category (Accounting).</li>
+
+              <li>Make the selected categories in the multi-select
+              be put onto the credit card when it&rsquo;s
+              submitted. This involves reworking the controller and
+              the template.</li>
+
+              <li>Make sure that the categories pre-selected in the
+              multi-select are only those categories already on the
+              card. Rework the assigns:
+              `@assigned<sub>billing</sub><sub>categories</sub>`
+              changes to `@billing<sub>categories</sub>` and
+              `@assigned categories` stays the same.</li>
+
+              <li>Change schema names for credit card and paypal
+              account to singular</li>
+
+              <li>Remove category<sub>edit</sub> link and
+              files</li>
+
+              <li>Resize and center edit and create modals for
+              billing categories</li>
+
+              <li>Finishing:
+
+                <ol class="org-ol">
+                  <li>Run tests</li>
+
+                  <li>Manually test</li>
+
+                  <li>`mix compile &ndash;force` and fix all errors
+                  and warnings</li>
+
+                  <li>Remove inspects and puts</li>
+                </ol>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div id="outline-container-org755a1ae" class="outline-4">
+          <h4 id="org755a1ae"><span class=
+          "section-number-4">1.1.2.</span> Feat/na i116 email
+          identity management #189</h4>
+
+          <div class="outline-text-4" id="text-1-1-2">
+            <ol class="org-ol">
+              <li>Move the `New Identity` link up to the top under
+              `Listing Identities`.</li>
+
+              <li>Likewise with `New Email`.</li>
+
+              <li>Import Ecto Commons validator functions to
+              `schema.ex` so they&rsquo;ll be available to all
+              schemas.</li>
+
+              <li>Add belongs<sub>to</sub>(:identity) to the email
+              schema and has<sub>many</sub>(:emails) to identity
+              schema.</li>
+
+              <li>Add select field to the modal for emails.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div id="outline-container-org7cad44d" class="outline-3">
+        <h3 id="org7cad44d"><span class=
+        "section-number-3">1.2.</span> Tuesday 1/31</h3>
+
+        <div class="outline-text-3" id="text-1-2"></div>
+
+        <div id="outline-container-org799ac08" class="outline-4">
+          <h4 id="org799ac08"><span class=
+          "section-number-4">1.2.1.</span> Feat/na i116 email
+          identity management #189</h4>
+
+          <div class="outline-text-4" id="text-1-2-1">
+            <ol class="org-ol">
+              <li>Address PR comments re: formatting and naming
+              fields.</li>
+
+              <li>Need to find a way to generate a keyword list so
+              first and last names are displayed but keyed to ids.
+              This will take some research. It turns out that
+              `select` as used in Phoenix templates will happily
+              take a keyword list as an argument. The keys of the
+              keyword list will be displayed as options, but the
+              actual params that the form sends to the event
+              handler will be the values of those keys. So I wrote
+              a little function
+              `generate<sub>keyword</sub><sub>list</sub>/1` in
+              `live<sub>helpers.ex</sub>`, which sorts out the
+              first and last names on a phone account and keys them
+              to ids, then spits out a keyword list for neat
+              display in the template. :-)</li>
+
+              <li>Allow identities to be added to emails. We need
+              to abstract maybe<sub>put</sub><sub>identity</sub> to
+              a helpers file (probably in `schema.ex`) and make
+              sure it&rsquo;s available from there. Also abstract
+              out an assign<sub>all</sub><sub>identities</sub>
+              function (most likely to `live<sub>helpers.ex</sub>`)
+              and make that available to both the form components i
+              email<sub>live</sub> and
+              phone<sub>accounts</sub>.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="outline-container-org79e01ff" class="outline-2">
+      <h2 id="org79e01ff"><span class="section-number-2">2.</span>
+      February</h2>
+
+      <div class="outline-text-2" id="text-2"></div>
+
+      <div id="outline-container-org18631ac" class="outline-3">
+        <h3 id="org18631ac"><span class=
+        "section-number-3">2.1.</span> Wednesday 2/1</h3>
+
+        <div class="outline-text-3" id="text-2-1"></div>
+
+        <div id="outline-container-orgdd9a544" class="outline-4">
+          <h4 id="orgdd9a544"><span class=
+          "section-number-4">2.1.1.</span> Feat/na i116 email
+          identity management #189</h4>
+
+          <div class="outline-text-4" id="text-2-1-1">
+            <ol class="org-ol">
+              <li>Need to fix error where NetAdminWeb cannot be
+              found when
+              user<sub>settings</sub><sub>controller</sub> attempts
+              to use it. Turns out that `mix compile &ndash;force`
+              will fix errors like that.</li>
+
+              <li>Editing an email account to add an identity does
+              not seem to work. Got it working, but had to change
+              `identity<sub>id</sub>` directly instead of changing
+              the association. Let&rsquo;s see how we did it in
+              `phone<sub>account</sub>`&hellip; It was the
+              `on<sub>replace</sub>` option that did it.
+              Let&rsquo;s fix that by changing to `:nilify` instead
+              of `:update `.</li>
+
+              <li>Change email to email<sub>address</sub> in the
+              email accounts migration, the email accounts schema,
+              the email accounts context, the email accounts live
+              views and components and templates, and the tests for
+              all those.</li>
+
+              <li>Manually test</li>
+
+              <li>Run tests, make tests pass</li>
+
+              <li>Run `mix compile &ndash;force`</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div id="outline-container-orga34a033" class="outline-3">
+        <h3 id="orga34a033"><span class=
+        "section-number-3">2.2.</span> Thursday 2/2</h3>
+
+        <div class="outline-text-3" id="text-2-2">
+          <p>So far, the postgrex error is only coming up on
+          Identities, Emails, and Phone Accounts, PayPal Accounts,
+          and Credit Cards pages, not the Users page.</p>
+
+          <p>Anyhow, I checked the Postgrex error:</p>
+
+          <p>[error] Postgrex.Protocol (#PID&lt;0.604.0&gt;)
+          disconnected: ** (DBConnection.ConnectionError) owner
+          #PID&lt;0.2692.0&gt; timed out because it owned the
+          connection for longer than 120000ms (set via the
+          :ownership<sub>timeout</sub> option)</p>
+
+          <p>Notice the PID is 0.2692.0. This matches the root PID
+          for the LiveView socket at the time this was running,
+          which implies that this is a LiveView issue. It happens
+          no matter which root liveview we&rsquo;re using, but ONLY
+          if we&rsquo;re using a liveview.</p>
+
+          <p>Made some minor fixes in the two open PRs. One was
+          merged.</p>
+        </div>
+      </div>
+
+      <div id="outline-container-org7d9e1a3" class="outline-3">
+        <h3 id="org7d9e1a3"><span class=
+        "section-number-3">2.3.</span> Friday 2/3</h3>
+
+        <div class="outline-text-3" id="text-2-3"></div>
+
+        <div id="outline-container-orgbd924b1" class="outline-4">
+          <h4 id="orgbd924b1"><span class=
+          "section-number-4">2.3.1.</span> (feat) [NA-I143]
+          Seperate &ldquo;notes&rdquo; as a separate button and
+          patch objects</h4>
+
+          <div class="outline-text-4" id="text-2-3-1">
+            <p>We need a separate notes tag for:</p>
+
+            <ol class="org-ol">
+              <li>Email Accounts</li>
+
+              <li>Identities</li>
+
+              <li>Billing Categories</li>
+
+              <li>Credit Cards *</li>
+
+              <li>Paypal Accounts</li>
+            </ol>
+
+            <p>\* already has a notes field but needs the
+            &ldquo;notes&rdquo; link removed from the grid and
+            turned into a button. The button should change an
+            assign that reveals the notes field.</p>
+
+            <p>Create some migrations to add a &ldquo;notes&rdquo;
+            text field to email account, identities, billing
+            categories, and paypal accounts.</p>
+
+            <p>For objects 1, 2, 3, and 5, the process is:</p>
+
+            <ol class="org-ol">
+              <li>Modify the schema
+
+                <ol class="org-ol">
+                  <li>Add notes as a field under the schema
+                  definition.</li>
+
+                  <li>Add notes in all the appropriate changeset
+                  attrs lists</li>
+                </ol>
+              </li>
+
+              <li>Create the text box component and make it
+              reusable.
+
+                <ol class="org-ol">
+                  <li>This should be a modal that takes the assigns
+                  and can add</li>
+                </ol>
+              </li>
+
+              <li>Modify the templates
+
+                <ol class="org-ol">
+                  <li>Add notes in the form components for each
+                  template</li>
+                </ol>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <div id="outline-container-org2a5ada7" class="outline-3">
+        <h3 id="org2a5ada7"><span class=
+        "section-number-3">2.4.</span> Monday 2/6</h3>
+
+        <div class="outline-text-3" id="text-2-4">
+          <p>It&rsquo;s too complex to add a modal-within-a-modal,
+          so I&rsquo;m going to refactor the form components to
+          exist on parent edit liveviews. So for example,
+          `form<sub>component.ex</sub>` for phone identities will
+          need to show up on PhoneIdentitiesLive.Edit. This will
+          require a medium-size refactor. This will be a heavier
+          lift than I thought.</p>
+
+          <ol class="org-ol">
+            <li>Create an edit liveview for the other entities:
+            billing categories, emails, identities, phone
+            accounts.</li>
+
+            <li>For each of these, edit the router so that the
+            `&ldquo;entity/edit&rdquo;` and
+            `&ldquo;entity/new&rdquo;` routes point to the new edit
+            liveview.</li>
+
+            <li>Delete old modals and form components. Remove
+            `apply<sub>action</sub>` pipelines from parent
+            controllers with names like `Entity.Index`.</li>
+          </ol>
+
+          <p>NOTE: I would like to set up the structural refactor
+          to create &ldquo;assign<sub>changeset</sub>&rdquo; and
+          other &ldquo;assign&rdquo; functions for these liveviews.
+          I&rsquo;ll get to that when I get back to the structural
+          refactor.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="postamble" class="status">
+    <p class="author">Author: John Doe</p>
+
+    <p class="date">Created: 2023-02-06 Mon 22:12</p>
+  </div>
+</body>
+</html>
