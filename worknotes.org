@@ -1,3 +1,6 @@
+#+AUTHOR: Caleb Beers
+#+OPTIONS: ^:{}
+
 * January
 ** Monday 1/30
 *** Add missing billing categories #187
@@ -5,9 +8,9 @@
 
 1. Put the links in `root.html.heex` under the right category (Accounting).
 2. Make the selected categories in the multi-select be put onto the credit card when it's submitted. This involves reworking the controller and the template.
-3. Make sure that the categories pre-selected in the multi-select are only those categories already on the card. Rework the assigns: `@assigned_billing_categories` changes to `@billing_categories` and `@assigned categories` stays the same.
+3. Make sure that the categories pre-selected in the multi-select are only those categories already on the card. Rework the assigns: `@assigned\billing_categories` changes to `@billing_categories` and `@assigned categories` stays the same.
 4. Change schema names for credit card and paypal account to singular
-5. Remove category_edit link and files
+5. Remove category\edit link and files
 6. Resize and center edit and create modals for billing categories
 7. Finishing:
    1. Run tests
@@ -18,19 +21,19 @@
 1. Move the `New Identity` link up to the top under `Listing Identities`.
 2. Likewise with `New Email`.
 3. Import Ecto Commons validator functions to `schema.ex` so they'll be available to all schemas.
-4. Add belongs_to(:identity) to the email schema and has_many(:emails) to identity schema.
+4. Add belongs\to(:identity) to the email schema and has_many(:emails) to identity schema.
 5. Add select field to the modal for emails.
 ** Tuesday 1/31
 *** Feat/na i116 email identity management #189
 1. Address PR comments re: formatting and naming fields.
-2. Need to find a way to generate a keyword list so first and last names are displayed but keyed to ids. This will take some research. It turns out that `select` as used in Phoenix templates will happily take a keyword list as an argument. The keys of the keyword list will be displayed as options, but the actual params that the form sends to the event handler will be the values of those keys. So I wrote a little function `generate_keyword_list/1` in `live_helpers.ex`, which sorts out the first and last names on a phone account and keys them to ids, then spits out a keyword list for neat display in the template. :-)
-3. Allow identities to be added to emails. We need to abstract maybe_put_identity to a helpers file (probably in `schema.ex`) and make sure it's available from there. Also abstract out an assign_all_identities function (most likely to `live_helpers.ex`) and make that available to both the form components i email_live and phone_accounts.
+2. Need to find a way to generate a keyword list so first and last names are displayed but keyed to ids. This will take some research. It turns out that `select` as used in Phoenix templates will happily take a keyword list as an argument. The keys of the keyword list will be displayed as options, but the actual params that the form sends to the event handler will be the values of those keys. So I wrote a little function `generate\keyword_list/1` in `live_helpers.ex`, which sorts out the first and last names on a phone account and keys them to ids, then spits out a keyword list for neat display in the template. :-)
+3. Allow identities to be added to emails. We need to abstract maybe\put_identity to a helpers file (probably in `schema.ex`) and make sure it's available from there. Also abstract out an assign_all_identities function (most likely to `live_helpers.ex`) and make that available to both the form components i email_live and phone_accounts.
 * February
 ** Wednesday 2/1
 *** Feat/na i116 email identity management #189
-1. Need to fix error where NetAdminWeb cannot be found when user_settings_controller attempts to use it. Turns out that `mix compile --force` will fix errors like that.
-2. Editing an email account to add an identity does not seem to work. Got it working, but had to change `identity_id` directly instead of changing the association. Let's see how we did it in `phone_account`... It was the `on_replace` option that did it. Let's fix that by changing to `:nilify` instead of `:update  `.
-3. Change email to email_address in the email accounts migration, the email accounts schema, the email accounts context, the email accounts live views and components and templates, and the tests for all those.
+1. Need to fix error where NetAdminWeb cannot be found when user\settings_controller attempts to use it. Turns out that `mix compile --force` will fix errors like that.
+2. Editing an email account to add an identity does not seem to work. Got it working, but had to change `identity\id` directly instead of changing the association. Let's see how we did it in `phone_account`... It was the `on_replace` option that did it. Let's fix that by changing to `:nilify` instead of `:update  `.
+3. Change email to email\address in the email accounts migration, the email accounts schema, the email accounts context, the email accounts live views and components and templates, and the tests for all those.
 4. Manually test
 5. Run tests, make tests pass
 6. Run `mix compile --force`
@@ -39,7 +42,7 @@ So far, the postgrex error is only coming up on Identities, Emails, and Phone Ac
 
 Anyhow, I checked the Postgrex error:
 
-[error] Postgrex.Protocol (#PID<0.604.0>) disconnected: ** (DBConnection.ConnectionError) owner #PID<0.2692.0> timed out because it owned the connection for longer than 120000ms (set via the :ownership_timeout option)
+[error] Postgrex.Protocol (#PID<0.604.0>) disconnected: ** (DBConnection.ConnectionError) owner #PID<0.2692.0> timed out because it owned the connection for longer than 120000ms (set via the :ownership\timeout option)
 
 Notice the PID is 0.2692.0. This matches the root PID for the LiveView socket at the time this was running, which implies that this is a LiveView issue. It happens no matter which root liveview we're using, but ONLY if we're using a liveview.
 
@@ -68,15 +71,15 @@ For objects 1, 2, 3, and 5, the process is:
 3. Modify the templates
    1. Add notes in the form components for each template
 ** Monday 2/6
-It's too complex to add a modal-within-a-modal, so I'm going to refactor the form components to exist on parent edit liveviews. So for example, `form_component.ex` for phone identities will need to show up on PhoneIdentitiesLive.Edit. This will require a medium-size refactor. This will be a heavier lift than I thought.
+It's too complex to add a modal-within-a-modal, so I'm going to refactor the form components to exist on parent edit liveviews. So for example, `form\component.ex` for phone identities will need to show up on PhoneIdentitiesLive.Edit. This will require a medium-size refactor. This will be a heavier lift than I thought.
 
 1. Create an edit liveview for the other entities: billing categories, emails, identities, phone accounts.
 2. For each of these, edit the router so that the `"entity/edit"` and `"entity/new"` routes point to the new edit liveview.
 3. Add links in the appropriate place in the index liveviews.
-4. Delete old modals and form components. Remove `apply_action` pipelines from parent controllers with names like `Entity.Index`.
+4. Delete old modals and form components. Remove `apply\action` pipelines from parent controllers with names like `Entity.Index`.
 5. Remove the hidden inputs and put a note button there to open the notes modal.
 
-NOTE: I would like to set up the structural refactor to create "assign_changeset" and other "assign" functions for these liveviews. I'll get to that when I get back to the structural refactor.
+NOTE: I would like to set up the structural refactor to create "assign\changeset" and other "assign" functions for these liveviews. I'll get to that when I get back to the structural refactor.
 ** Tuesday 2/7
 Right now we have four liveview entities:
 
@@ -99,7 +102,7 @@ Need to correct the tests to reflect the new structure in this refactor. Then ad
 
 And done! All tests pass, no warnings on `mix compile --force`
 
-Tomorrow: run `git rebase netadmin_v2` and go from there.
+Tomorrow: run `git rebase netadmin\v2` and go from there.
 
 ** Thursday 2/9
 Index controllers in these files:
@@ -116,10 +119,10 @@ To add note button to grids:
    \ |> assign(notes?: [])
 2. Add notes? event handler to each index controller:
   @impl true
-  def handle_event("notes-field", %{"id" => id} = params, socket) do
+  def handle\event("notes-field", %{"id" => id} = params, socket) do
     case socket.assigns.notes == id do
       true -> {:noreply, assign(socket, notes: [])}
-      _ -> {:noreply, assign(socket, notes: id)}
+      \ -> {:noreply, assign(socket, notes: id)}
     end
   end
 3. Copy and paste this into each index heex:
@@ -131,3 +134,80 @@ To add note button to grids:
             </td>
 
 Afterwards change paypal edit to show/hide notes as the other pages.
+** Friday 2/10
+---
+** Monday 2/13
+Return to working on structural refactor. Pluralize schemas and do some housecleaning.
+
+Go over Tailwind PR and notes PR with Kyle.
+
+Leave roles alone but change tooltip for billing categories to Tailwind.
+
+Daisy UI is easy to add, so go ahead and add it.
+
+** Tuesday 2/14
+
+As it turns out, Tailwind has a set of default styles called "preflight" that overrides the default Phoenix styles. Disabled.
+
+Also worked a little more on the structural refactor. I want to get this code nice and clean before more major changes are made.
+
+** Wednesday 2/15
+*** NA-I136
+So, I need to set up a file upload so people can upload documents for an identity. Phoenix has a `fileupload` function built-in so that's what I'll use. Postgres can store binaries, so that's how we'll be storing our files.
+
+The database design should be fairly simple: documents ought to have a "data" field for the binary blob. I will need to research how these are stored in postgres - might not need a field. It will need an `identityid` as a foreign key, and of course, each document will have its own `document_id`. By itself, those three should be sufficient, although it might also behoove us to have a `name` or `title` field just to have some way of referencing these things without seeing a UUID with a zillion random characters. So, the agenda here is:
+
+On second thought, `identityid` might be wrong.
+
+1. Create a migration for the documents table.
+2. Add a document upload field to the appropriate entities
+3. Adjust the changesets and schemas. This will naturally be a `hasmany` relation between the entities and their files.
+
+*** chore/structural refactor
+For the structural refactor, we need:
+1. Get rid of `no route found` error for favicon
+2. Get rid of `no route found` error for static path
+
+*** NA-I143
+And on the `notes` PR, we need to move the notes button from the form to the grid. This applies to these entities:
+
+1. Billing Categories
+2. Credit Cards
+3. Emails
+4. Identities
+5. Paypals
+6. Phone Accounts
+
+This will be accomplished by means of a notes modal that opens, takes a changeset for the given item, and only updates the notes field.
+
+It seems that the notes modal needs a way to see what kind of struct is being passed in. There is a way to pattern match on structs, and it can certainly be passed in as an assign.
+
+The other thing we need to do to make this work is make sure that every function for updating an entity in a context is named `update` not `updatethis_thing`. <-- undo this later (Thursday note)
+
+To complete the update function in the notes modal, I will need to make it possible to select the right module for a given struct.
+
+** Thursday 2/16
+*** NA-I143
+Continuing the notes modal work from yesterday. It's problematic to have a single modal that does all this because it must recognize the type of struct it's getting and call the correct context function. I'll just duplicate modals instead.
+
+Note to self: when complexity seems overwhelming, premature optimization may have happened. Perhaps solve the problem with duplication instead.
+
+** Friday 2/17
+**** NA-I143
+1. Copy notes modal to each live directory for each entity
+2. Add routes for each modal
+3. Copy and paste modal and notes link into each `heex`
+4. Make modifications in each `heex`
+5. Make modifications in each `notesmodal` controller.
+6. Add `handleparams/3` call to get the entity id to each `index` controller.
+7. Manual test
+8. Remove the notes field from the edit views
+9. Rebase or merge
+10. Mix format
+11. Make sure tests pass
+12. Get rid of any warnings with `mix compile --force`
+13. Push and request review
+
+Note: it looks like the paypal and phone accout index pages have the edit and delete buttons grouped under a single `<tr>` with two `<span>`s. Should homogenize those in the structural refactor.
+
+Ran into a very mysterious error where forms were not emitting events. As it turns out, forms cannot emit events from inside of tables, so the modal has to be set outside of the table to emit anything.
