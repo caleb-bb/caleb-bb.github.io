@@ -151,13 +151,11 @@ As it turns out, Tailwind has a set of default styles called "preflight" that ov
 
 Also worked a little more on the structural refactor. I want to get this code nice and clean before more major changes are made.
 
-** Wednesday 2/15
+** <<wed21522>>Wednesday 2/15
 *** NA-I136
 So, I need to set up a file upload so people can upload documents for an identity. Phoenix has a `fileupload` function built-in so that's what I'll use. Postgres can store binaries, so that's how we'll be storing our files.
 
 The database design should be fairly simple: documents ought to have a "data" field for the binary blob. I will need to research how these are stored in postgres - might not need a field. It will need an `identityid` as a foreign key, and of course, each document will have its own `document_id`. By itself, those three should be sufficient, although it might also behoove us to have a `name` or `title` field just to have some way of referencing these things without seeing a UUID with a zillion random characters. So, the agenda here is:
-
-On second thought, `identityid` might be wrong.
 
 1. Create a migration for the documents table.
 2. Add a document upload field to the appropriate entities
@@ -193,13 +191,13 @@ Continuing the notes modal work from yesterday. It's problematic to have a singl
 Note to self: when complexity seems overwhelming, premature optimization may have happened. Perhaps solve the problem with duplication instead.
 
 ** Friday 2/17
-**** NA-I143
+*** NA-I143
 1. Copy notes modal to each live directory for each entity
 2. Add routes for each modal
 3. Copy and paste modal and notes link into each `heex`
 4. Make modifications in each `heex`
 5. Make modifications in each `notesmodal` controller.
-6. Add `handleparams/3` call to get the entity id to each `index` controller.
+6. Add `handle_params/3` call to get the entity id to each `index` controller.
 7. Manual test
 8. Remove the notes field from the edit views
 9. Rebase or merge
@@ -211,3 +209,90 @@ Note to self: when complexity seems overwhelming, premature optimization may hav
 Note: it looks like the paypal and phone accout index pages have the edit and delete buttons grouped under a single `<tr>` with two `<span>`s. Should homogenize those in the structural refactor.
 
 Ran into a very mysterious error where forms were not emitting events. As it turns out, forms cannot emit events from inside of tables, so the modal has to be set outside of the table to emit anything.
+
+** Monday 2/20
+*** NA-I143
+Finished! PR is pushed for review. Added a quick last-minute change to `README.md` to clarify how Google OAuth works for this app.
+
+*** NA-I136-implement-identity-documents
+Resuming work from [[wed21522]].
+
+A document should `belong_to` a entity, where that entity can `have_many` documents. Problem: a document can `belong_to` more than one type of entity. So we can't put `belongs_to: NetAdmin.Identities.Identity`, for example, because that locks documents to only one kind of entity. A polymorphic association would appear to be the solution. According to [[https://hexdocs.pm/ecto/Ecto.Schema.html#belongs_to/3-polymorphic-associations][the hex docs]], this is best accomplished in our case by simply adding a separate id field for each possible parent in the documents table.
+
+We can add the extra fields by adding new migrations later. In the meantime, I'll just do identities. It is important that the `identities_id` be nullable. In order to take the approach described in the hex docs, any given `id` column must be nullable.
+
+Chris McCord said in 2020 that components do not currently support file uploads, so I will need to refactor the `form_component.ex` into an `edit.ex` which will be its own parent LiveView.
+** Tuesday 2/21
+*** NA-I136-implement-identity-documents
+First, make a list of files associated with an identity that shows up in the edit dialogue. Second, let's make them downloadable.
+
+Direct downloads are not yet supported by LiveView so we'll write a Phoenix controller to do it for us.
+
+Unfortunately, we can't just redirect to that controller and go back to LiveView. There is, as of yet, no good way to redirect from LiveView to a Phoenix controller and then get back to LiveView easily.
+
+Instead, we'll do some magic with JS to serve the file via an event listener in `app.js`. We can push stuff to this listener using `push_event/3`, with an event name of "download" and a payload consisting of a map: `%{"uri" => Routes.download_path(socket, :document, id)}`. This map causes the phoenix controller designated by that route (this is `NetAdminWeb.DownloadController`) to open in a hidden frame. That controller serves the file. The `:document` argument to our route helper tells the controller to call `document/3`. In the future, if we wanna download anything else, we can add functions besides `document/3`.
+** Wednesday 2/22
+*** NA-I119-vps-management
+Create resources for vps management liveviews.
+** Thursday 2/23
+*** NA-I119-vps-management
+Fix CSS issue wtih checkboxes.
+
+Need to:
+1. Make currency a string for now
+2. A country can just have a name and an id. Create schema/migration with `phx.gen.schema`.
+3. Put the United States as a country in `seeds.exs`
+4. Give the VPS schema a belongs_to relation to countries.
+5. Make the country and currency selector on the form a dropdown based on work already done.
+** Friday 2/24
+*** NA-I119-vps-management
+Need to address some PR comments.
+
+1. Add migration and schema for currency table. Should have exchange rate and name.
+2. Rewrite the countries migration to add specified fields: `abbr`,`country_code`. `name`, `iana_domain`, `itu_calling`, `currency_id`. The `currency_id` should be a foreign key to the currency table.
+3. Add all the countries that Kyle sent me to `seeds.exs`.
+4. Allow search to filter country names.
+5. Change the migration and `vps.ex` so that only Name, Cost, and URL are required.
+6. Add URL validation with Ecto Commons.
+*** NOTICKET
+1. Add Daisy UI to get components
+2. use Daisy UI's provided dropdown component to add the "Research" tab.
+** Monday 2/28
+*** NA-I119-vps-management
+Complete ticket.
+** Tuesday 2/29
+*** NOTICKET-add-daisyui-and-popout-menu
+As it turns out, flexbox can become quite confused if it has heterogenous elements. So if you have `justify-center` for your flexbox items, it might not know that, say, an `<a>` element and a `<nav>` element are to be treated the same. So wrapping each individual element in a `<div>` can be quite helpful because flexbox will treat `divs` as homogeneous elements.
+
+I think I should replace the current drawer with a sidebar from daisyui. The general pattern from here on out should be: each time I work on a component, I remove any legacy code and replace it with Tailwind/daisy. That way we can change the CSS over to tailwind without bothering with a single huge overhaul.
+** Wednesday 3/01
+*** NOTICKET-add-daisyui-and-popou-menu
+Finish first draft. Next we'll want to merge the `form_component.ex` to the parent component.
+
+*** NA-I145-implement-provider-research-registrar
+Implement required functionality. This has a `form_component.ex`, however, so it will need to be merged to the parent liveview since that's the preferred behavior for this. Also, get rid of main scrolling behavior.
+** Thursday 3/02
+*** NA-I119-vps-management
+Implementing the requested search behavior will take a bit of work!
+
+In order to implement autocomplete behavior, we have to set it up so that the value of the search_input field is set from `form_component.ex`, probably by an event handler. That's a challenge: how do we set the value of form fields from event handlers? Normally the value is typed in. The best I can think of is to set the value of the field equal to an assign and change that assign in the event handler.
+
+This was fun to build and the only other example I can find uses AlpineJS. I did it without any JS so some LiveView developers would probably be interested to see how to do this.
+
+Hmm... Not saving to the db yet! We also have the problem that if the query is a substring of another string that comes before it alphabetically, that other string will be saved.
+
+Okay, corrected both of those by having it check to see if an exact match exists in the list before defaulting to the first result.
+
+Next steps:
+1. Make tests pass.
+   1. Add fixture for countries
+   2. Call country fixture to create a country in the providers test
+   3. Pass that country as an argument to the vps fixture called in the providers test.
+2. Merge `form_component.ex` to edit parent.
+3. Contact kyle for further feedback
+4. Apply feedback
+5. Fix up subsequent PRs with merge/rebase.
+** Friday 3/03
+*** NA-I119-vps-management
+Make the tests pass (step 1. from yesterday).
+** Monday 3/06
