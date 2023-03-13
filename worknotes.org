@@ -281,6 +281,7 @@ This was fun to build and the only other example I can find uses AlpineJS. I did
 
 Hmm... Not saving to the db yet! We also have the problem that if the query is a substring of another string that comes before it alphabetically, that other string will be saved.
 
+
 Okay, corrected both of those by having it check to see if an exact match exists in the list before defaulting to the first result.
 
 Next steps:
@@ -296,3 +297,85 @@ Next steps:
 *** NA-I119-vps-management
 Make the tests pass (step 1. from yesterday).
 ** Monday 3/06
+*** NA-I119-vps-management
+Finish up merging the component to the parent edit liveview. Add filtering controls to index.
+
+For tomorrow: make the two text inputs for filtering part of a form so they can bear the phx-change event. I won't need a changeset for this because of this: https://elixirforum.com/t/how-to-use-form-for-in-liveview-component-without-model-or-changeset/38450
+*** NOTICKET/add-daisyui-and-popout-menu
+Change groupings of menu elements. Merge to NA-I119 branch.
+** Tuesday 3/07
+*** NA-I119-vps-management
+`vps_collection` is an assign that contains all the vps structs rendered on the page. We can leverage this. Instead of filtering in the heex (which is clumsy anyway) we can build a function that filters `vps_collection` and sets it to a `filtered` assign. The vps structs will be pulled from `@filtered` in the template. The `filtered` assign will be set in the event handlers for the forms and checkboxes.
+
+Two errors; checkboxes on edit form seem to be unclickable, and weird behavior when we click checkboxes on the index page. Periscope shows that the assigns are correct, so it's just graphical behavior that's wrong. Adding `checked={@assign_in_question}` to the inputs fixes that.
+
+The edit form being unclickable is a little more difficult. I can't figure out what's stopping the checkboxes from being clicked. Saving the form reveals that the form clicks ARE going through. It's just that they're not showing up graphically, once again.
+
+I think I'm going to set `checked: value` on each form element and make the "change" event handler reset checkbox vals. The issue is that I'm not sure what's changing when I click those boxes because I see no changes in the socket. I don't see any on the changeset, either. I have no idea how this is working. I do see that the change event handler is firing each time so let me try to inspect that...
+
+SUCCESS! It appears that the params are changing. So I can pull the checkbox values of the params and use those to set the box visuals!!
+
+Bug: Country name reverts to Afghanistan at the beginning when editing. We need to change how `assign_selected_country` works.
+
+Bug: The filtering doesn't seem to work, either.
+** Wednesday 3/08
+*** NA-I119-vps-management
+
+Changing the checkboxes based on the params still doesn't work. Since the change isn't showing up graphically even though the boxes are checked in the DOM, I strongly suspect a css issue.
+
+`ba84af8` is the last known commit where the checkboxes work as expected. I'm comparing those two to see what broke the checkboxes.
+
+I couldn't find the breaking change, but removing the checkbox styling in `apps/netadmin_web/assets/css/app.css` fixed this issue. However, it also made the checkboxes on the index page disappear, so I'll have to attend to the styling there.
+
+Bugs to fix:
+1. Country name reverts to Afghanistan at the beginning when editing. We need to change how `assign_selected_country` works.
+2. The filtering doesn't work. Clicking the checkboxes on the index page does not filter results. Neither does typing stuff into the fields.
+3. `assign_selected_country_id()` does nothing.
+4. It also appears that checking the boolean boxes while creating a new form does not do anything but checking the boolean boxes while editing an existing form does.
+5. Clicking on the "view" link opens the same modal every time, for the same vps.
+
+Let's fix 3 first. Simple enough: delete it from `live_helpers.ex` and all calls in the controller.
+
+Number 1 is a little harder. What should `assign_selected_country` do? It should grap the current country, if there is one, and put it on the form. Otherwise, it should default to the first country in the list. We do use a `live_action` in this controller, so let's use that to tell which one to do. We can pattern match the live action out of the socket assigns on the function head for `assign_selected_country`. Fixed this one.
+
+Number 5 is a problem. When I mouse over the "view" links, the status bar displays two different ids, but clicking said links brings up the same modal every time. It also throws this error in the js console:
+
+```
+Multiple IDs detected: modal. Ensure unique element ids.
+```
+
+This is because ALL the modals are trying to open at once, i.e. opening a modal for each VPS. Solved by using the id param to assign a current_vps_id.
+
+Number 2: filters for checkboxes weren't working because somehow I lost my work from earlier this week. Was not difficult to re-implement, tho. Now that the checkboxes are done, time for the text filters. Start by writing the event handlers to change the assigns, and then editing the assign_filtered_vps_collection function.
+
+This begs the question, though: should I break out the calls to `Enum.filter` into the other event handlers? I'm gonna make a WIP commit and take a short break.
+
+Now to seed some VPSs and add live testing for my original functionality.
+** Thursday 3/08
+*** NA-I119-vps-management
+Many PR comments to address. Clean it all up and fix testing.
+
+Need to think through this filtering. The behavior we want is as follows: if a box is checked, then we show VPS have that attribute. Otherwise, show both the VPS that have that attribute and the ones that don't.
+
+The one exception to this is the `blacklisted` attribute, which is the opposite of `not_blacklisted`. If `not_blacklisted` IS checked, then we filter out all the blacklisted VPS.
+
+To accomplish this, I'll filter out only those keys that have "true" as their clause.
+
+ADDING THE MONEY LIBRARY
+1. Add money to deps
+2. Change cost field for vps to integer in the migration and schema
+3. Make changes in index/edit templates
+4. Make changes in index/edit liveviews
+5. Make changes in tests
+
+** Friday 3/09
+*** NA-I119-vps-management
+Nearly finished - most fixes implemented - the big issue coming up will be switching from `:money` to `:ex_money`. Unless I can get `:money` to work.... probably `:ex_money` will be easier.
+** Monday 3/13
+*** NA-I119-vps-management
+A mismatch between the migration and the front end seemed to be the culprit in why this wasn't working on Friday. The migration had the cost as an integer rather than `:money_with_currency`.
+
+When I use the `temporary_assigns:` option for `mount/3` in `VpsLive.Index`, it causes an error. The error is this: when I type something into the URL or name search fields that doesn't match any vps, the list should be empty. But when I use the `temporary_assigns: [vps_collection: []]` option, this doesn't happen. Instead, it continues to render whatever was already on-screen. If I remove the `temporary_assigns:` option, then it works as expected: there are no VPS listed when the search fields don't match anything.
+
+What does that option do? It resets `vps_collection` to `[]` after every render. It doesn't stop the urls from being filtered when there's still a match. But once `vps_collection` winds up as an empty list, it stops rendering it for some reason. I think that, perhaps, it doesn't re-render when the list is empty because it registers that as the "rest" condition, if that makes any sense. I notice that setting the option to a single empty Vps struct seems to fix this, i.e. `assign_vps_collection(), temporary_assigns: [vps_collection: [%Vps{}]]}
+`.
